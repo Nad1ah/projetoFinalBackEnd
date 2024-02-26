@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
-const db = require("./db/mongodb");
+const morgan = require("morgan");
 const auth = require("./auth/routes");
 const polls = require("./polls/routes");
+const db = require("./db/mongodb");
 
 const app = express();
 app.use(express.json());
