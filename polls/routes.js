@@ -8,6 +8,17 @@ router.get("/", async (req, res) => {
   res.status(200).json(polls);
 });
 
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  const poll = await services.getPollById(id);
+  if (!poll) {
+    return res.status(404).json({ error: "Poll not found" });
+  }
+  res.status(200).json(poll);
+});
+
+router.use(auth);
+
 router.delete("/:id", async (req, res) => {
   const pollId = req.params.id;
 
@@ -23,16 +34,8 @@ router.delete("/:id", async (req, res) => {
 
   res.status(200).json({ message: "poll deleted successfully" });
 });
-router.get("/:id", async (req, res) => {
-  const { id } = req.params;
-  const poll = await services.getPollById(id);
-  if (!poll) {
-    return res.status(404).json({ error: "Poll not found" });
-  }
-  res.status(200).json(poll);
-});
 
-router.post("/", auth, async (req, res) => {
+router.post("/", async (req, res) => {
   const { question, options, expiresAt } = req.body;
   const newPoll = await services.createPoll({ question, options, expiresAt });
   if (!newPoll) {
@@ -41,7 +44,7 @@ router.post("/", auth, async (req, res) => {
   res.status(201).json(newPoll);
 });
 
-router.post("/:id/vote", auth, async (req, res) => {
+router.post("/:id/vote", async (req, res) => {
   const { id } = req.params;
   const { option } = req.body;
   const vote = await services.vote(id, option);

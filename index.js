@@ -4,9 +4,11 @@ const morgan = require("morgan");
 const auth = require("./auth/routes");
 const polls = require("./polls/routes");
 const db = require("./db/mongodb");
+const morgan = require("morgan");
 
 const app = express();
 app.use(express.json());
+app.use(morgan());
 app.use("/auth", auth);
 app.use("/polls", polls);
 
