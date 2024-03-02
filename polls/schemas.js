@@ -3,6 +3,7 @@ const Joi = require("joi");
 const createPollSchema = Joi.object({
   question: Joi.string().required(),
   options: Joi.array().items(Joi.string()).min(2).max(10).required(),
+  expiresAt: Joi.date().max(new Date()),
 });
 
 const voteSchema = Joi.object({
@@ -13,4 +14,3 @@ module.exports = {
   createPollSchema,
   voteSchema,
 };
-//criar joi do expire
